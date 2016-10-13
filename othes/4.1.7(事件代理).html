@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>事件代理</title>
+</head>
+<body>
+	<ul id="list">
+		<li id="item1">Simon</li>
+		<li id="item2">Kenner</li>
+		<li id="item3">Erik</li>
+	</ul>
+	<button id="btn">change</button>
+
+	<script type="text/javascript">
+//处理函数
+	function clickListener(event) {
+   		console.log(event);
+	}
+	function renderList() {
+   		$("#list").innerHTML = '<li>new item</li>';
+	}
+// 仅能根据id捕获dom的封装
+		function $(selector){
+			if (selector.substr(0,1) == "#") {
+				var getDom = document.getElementById(selector.substring(1));
+				return getDom;
+			} else{
+				console.log("This is not a id");
+			}
+		}	
+//事件封装	
+	var $1 = {
+			on: function(element, event, listener){
+				element.addEventListener(event,listener);
+			},
+			un: function(element, event, listener){
+				element.removeEventListener(event,listener);
+			},
+			click: function(element, listener){
+				element.addEventListener("click", listener);
+			},
+			enter: function(element, listener){
+				element.addEventListener("keyup", function(event){
+		    	var event = event ? event : window.event;
+		    	if (event.keyCode == 13) {
+		    		listener();			//先判断是否为enter再调用
+		    	};
+		   		})
+			}
+			delegate: function(element, tag, eventName, listener){
+				$1.on(element, eventName, function(){		//不直接将此function指定为listener，先检测tagName是否为li
+					event = event || window.event;
+					var target = event.target || event.srcElement;
+					if (target.tagName == tag.toUpperCase()) {		// element.tagName得到元素标签名（大写）
+						listener(event);
+					}
+				});
+			}
+		}
+//事件代理
+/*	function delegateEvent(element, tag, eventName, listener) {
+		$1.on(element, eventName, function(){		//不直接将此function指定为listener，先检测tagName是否为li
+			event = event || window.event;
+			var target = event.target || event.srcElement;
+			if (target.tagName == tag.toUpperCase()) {		// element.tagName得到元素标签名（大写）
+				listener(event);
+			}
+		});
+	}
+*/
+//	$1.delegate = delegateEvent;
+	$1.click($("#btn"), renderList);
+	$1.delegate($("#list"), "li", "click", clickListener);
+
+	</script>
+</body>
+</html>

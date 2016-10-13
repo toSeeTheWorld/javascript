@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>深度克隆</title>
+</head>
+<body>
+	<script type="text/javascript">
+// 使用递归来实现一个深度克隆，可以复制一个目标对象，返回一个完整拷贝
+// 被复制的对象类型会被限制为数字、字符串、布尔、日期、数组、Object对象。不会包含函数、正则对象等
+	function cloneObject (src) {
+  	// 对于基本数据类型，只要直接返回即可
+		if (src == null || typeof src != 'object') {  
+			return src;
+  		};
+
+	// 对于对象分为以下三种情况
+
+	// 对于Date等引用类型的数据，需要考虑调用构造函数重新构造，直接赋值依然会有引用问题（不是真正的clone引用变量）
+	// 以Date为例
+		if (src instanceof Date) {
+			var clone = new Date(src.getDate());
+			return clone;
+		};
+
+	// 对于数组，需要遍历，这样可以保证在在Array对象上扩展的属性也可以正确复制
+		if (src instanceof Array) {
+			var clone = [];
+			for (var i = 0; i < src.length; i++) {
+				clone[i] = cloneObject(src[i]);
+			};
+			return clone;
+		};
+
+	// 对于其他object，同样也需要遍历
+		if (src instanceof Object) {
+			var clone = {};
+			for (var key in src) {
+				if (src.hasOwnProperty(key)) {  // 忽略掉继承属性，只取属于它本身的属性
+					clone[key] = cloneObject(src[key]);
+				};
+			};
+			return clone;
+  		};
+	};
+
+	//测试用例：
+	var srcObj = {
+		a: 1,
+		b: {
+			b1: ["hello","hi"],
+			b2: "Javascript"
+		}
+	}
+	var abObj = srcObj;
+	var tarObj = cloneObject(srcObj);
+
+	srcObj.a = 2;
+	srcObj.b.b1[0] = "Hello";
+
+	console.log(abObj.a);
+	console.log(abObj.b.b1[0]);
+
+	console.log(tarObj.a);     //1
+	console.log(tarObj.b.b1[0]);	//"hello"
+	</script>	
+</body>
+</html>

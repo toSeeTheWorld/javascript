@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>对列表内li增加事件监听</title>
+</head>
+<body>
+	<ul id="list">
+		<li>Simon</li>
+		<li>Kenner</li>
+		<li>Erik</li>
+	</ul>
+
+	<script type="text/javascript">
+//处理函数
+	function clickListener(event) {
+   		console.log(event);
+	}
+// 仅能根据id捕获dom的封装
+		function $(selector){
+			if (selector.substr(0,1) == "#") {
+				var getDom = document.getElementById(selector.substring(1));
+				return getDom;
+			} else{
+				console.log("This is not a id");
+			}
+		}	
+//事件封装	
+	var $1 = {
+			on: function(element, event, listener){
+				element.addEventListener(event,listener);
+			},
+			un: function(element, event, listener){
+				element.removeEventListener(event,listener);
+			},
+			click: function(element, listener){
+				element.addEventListener("click", listener);
+			},
+			enter: function(element, listener){
+				element.addEventListener("keyup", function(event){
+		    	var event = event ? event : window.event;
+		    	if (event.keyCode == 13) {
+		    		listener();			//先判断是否为enter再调用
+		    	};
+		   		})
+			}
+		}
+//遍历节点		
+	function each(arr, fn) {
+		    for (var i = 0; i < arr.length; i++) {
+		    	fn(arr[i]);		//将数组中每一项作为参数传入函数
+		    }
+		}
+	each($("#list").getElementsByTagName('li'), function(li) {
+   		$1.click(li, clickListener);
+	});
+
+	</script>
+</body>
+</html>

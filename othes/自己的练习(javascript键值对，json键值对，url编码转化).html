@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>javascript键值对，json键值对，url编码转化</title>
+</head>
+<body>
+	<form id="marco-data">
+		<input type="text" name="name" value="marco">
+		<input type="text" name="age" value="20">
+		<input type="text" name="school" value="gdut">
+	</form>
+
+	<script type="text/javascript">
+		var  jsData = {
+            name: 'simon',
+            password: '123456'
+        }
+        var jsonData = JSON.stringify(jsData);
+        var URLData = encodeURIComponent(jsonData);
+        var unURLData = decodeURIComponent(URLData);
+        console.log(jsData);
+        console.log("js转json");
+        console.log(jsonData);
+        console.log("json转url");
+        console.log(URLData);
+        console.log("url逆编码");
+        console.log(unURLData);
+//不能直接对js对象进行URL编码解码：
+        var URLData2 = encodeURIComponent(jsData);
+        var unURLData2 = decodeURIComponent(jsData);
+        console.log("js转url");	
+        console.log(URLData2);
+        console.log("url逆编码");	
+        console.log(unURLData2);	
+/*		
+//表单序列化函数serialize()见书P436与P577
+        var formData = document.getElementById("marco-data");
+        console.log(serialize(formData));
+*/
+	</script>
+</body>
+</html>

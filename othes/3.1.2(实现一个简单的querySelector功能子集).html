@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>实现一个简单的Query</title>
+</head>
+<body>
+	<div id="adom">
+		<a href="http://www.baidu.com">链接示例</a>
+		<button class="classa">第一个按钮</button>
+		<button class="classa">第二个按钮</button>
+		<input type="text" name="" data-log="today">
+		<input type="text" name="" data-time="2015">
+	</div>
+
+	<script type="text/javascript">
+// 实现一个简单的Query
+		function $(selector) {
+			//返回该id的dom
+			function getId(selector){
+				element = document.getElementById(selector.substring(1));
+			}
+			//返回该class的dom
+			function getClass(selector){
+				element = document.getElementsByClassName(selector.substring(1))[0];
+			}
+			//返回该自定义属性的dom
+			function getData(selector){
+				element = "?"
+			}
+			//检测空格
+			function getBlank(selector){
+				var property = [false];   //标志位，是否有空格分割
+				for (var i = 0; i < selector.length-1; i++) {
+					if (selector.substr(i,1) == " ") {
+						property[0] = true; 
+						property[1] = selector.substring(0,i-1);
+						property[2] = selector.substring(i+1);
+					}
+				}
+				return property;
+			}
+			//检测前缀
+			function prefix(selector){
+				switch(selector.substr(1,1)){
+					case "#":
+						getId(selector);
+						break;
+					case ".":
+					case "[":
+				}
+			}
+			var propertyArray = getBlank(selector);
+			if (propertyArray[0]) {
+
+			} else {
+				return prefix(selector);
+			}
+		}
+
+		console.log($("#adom"));
+		//console.log($("a"));
+		//console.log($(".classa"));
+		//console.log($("[data-log]"));
+		//console.log($("[data-time=2015]"));
+		//console.log($("#adom .classa"));
+
+		// 可以通过id获取DOM对象，通过#标示，例如
+		$("#adom"); // 返回id为adom的DOM对象
+		
+		// 可以通过tagName获取DOM对象，例如
+		$("a"); // 返回第一个<a>对象
+
+		// 可以通过样式名称获取DOM对象，例如
+		$(".classa"); // 返回第一个样式定义包含classa的对象
+
+		// 可以通过attribute匹配获取DOM对象，例如
+		$("[data-log]"); // 返回第一个包含属性data-log的对象
+
+		$("[data-time=2015]"); // 返回第一个包含属性data-time且值为2015的对象
+
+		// 可以通过简单的组合提高查询便利性，例如
+		$("#adom .classa"); // 返回id为adom的DOM所包含的所有子节点中，第一个样式定义包含classa的对象
+
+	</script>
+</body>
+</html>

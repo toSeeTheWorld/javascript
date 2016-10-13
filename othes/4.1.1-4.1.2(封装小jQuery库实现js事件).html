@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>封装小jQuery库实现js事件</title>
+</head>
+<body>
+	<p>存在的问题：</p>
+	<div id="doma" tabindex="1" style="height: 100px;width: 100px;background-color: green;padding: 10px;">Go!</div>
+	<script type="text/javascript">
+// 仅能根据id捕获dom的封装
+		function $(selector){
+			if (selector.substr(0,1) == "#") {
+				var getDom = document.getElementById(selector.substring(1));
+				return getDom;
+			} else{
+				console.log("This is not a id");
+			}
+		}
+
+// 处理函数：
+		function changeWord(event) {
+			var event = event ? event : window.event;
+			var div1 = document.getElementById("doma");
+			if (div1.firstChild.nodeValue == "Go!") {
+				div1.firstChild.nodeValue = "Marco!";
+			} else{
+				div1.firstChild.nodeValue = "Go!";
+			}
+		    
+		}
+/*
+// 给一个element绑定一个针对event事件的响应，响应函数为listener
+
+		function addEvent(element, event, listener) {
+		    element.addEventListener(event,listener);
+		}
+		//addEvent($("#doma"), "click", changeWord);
+
+// 移除element对象对于event事件发生时执行listener的响应
+
+		function removeEvent(element, event, listener) {
+		    element.removeEventListener(event,listener);
+		}
+		removeEvent($("#doma"), "click", changeWord);
+
+// 实现对click事件的绑定
+
+		function addClickEvent(element, listener) {
+		    addEvent(element, "click", listener);
+		}
+
+// 实现对于按Enter键时的事件绑定
+
+		function addEnterEvent(element, listener) {
+		    addEvent(element, "keyup", function(event){
+		    	var event = event ? event : window.event;
+		    	console.log(event.type)
+		    	if (event.keyCode == 13) {
+		    		changeWord();
+		    	}
+		    });
+		}
+		addEnterEvent($("#doma"), changeWord);
+*/
+
+//接下来我们把上面几个函数和$做一下结合，把他们变成$对象的一些方法
+/*
+addEvent(element, event, listener) -> $.on(element, event, listener);
+removeEvent(element, event, listener) -> $.un(element, event, listener);
+addClickEvent(element, listener) -> $.click(element, listener);
+addEnterEvent(element, listener) -> $.enter(element, listener);
+*/
+		var $1 = {
+			on: function(element, event, listener){
+				element.addEventListener(event,listener);
+			},
+			un: function(element, event, listener){
+				element.removeEventListener(event,listener);
+			},
+			click: function(element, listener){
+				element.addEventListener("click", listener);
+			},
+			enter: function(element, listener){
+				element.addEventListener("keyup", function(event){
+		    	var event = event ? event : window.event;
+		    	if (event.keyCode == 13) {
+		    		listener();			//先判断是否为enter再调用
+		    	};
+		   		})
+			}
+		}
+		$1.on($("#doma"), "mousedown", changeWord);
+		$1.un($("#doma"), "mouseup", changeWord);   //触发不了？
+		//$1.click($("#doma"), changeWord);
+		$1.enter($("#doma"), changeWord);
+
+	</script>
+</body>
+</html>

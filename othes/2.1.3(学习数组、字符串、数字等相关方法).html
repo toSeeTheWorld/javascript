@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>学习数组、字符串、数字等相关方法</title>
+</head>
+<body>
+	<script type="text/javascript">
+// 对数组进行去重操作，只考虑数组中元素为数字或字符串，返回一个去重后的数组
+		function uniqArray(arr) {
+		    for (var i = 0; i < (arr.length - 1); i++) {
+		    	for (var j = i + 1; j < arr.length; j++) {
+		    		if (arr[i] == arr[j]) {		//第i项与后面每一项(j)作比较
+		    			arr.splice(j,1);             //P95
+		    			j--;		//去掉第j项后，后一项顶上，需再比较
+		    		}
+		    	}
+		    };
+		    return arr;
+		}
+
+		// 使用示例
+		var a = [1, 3, 3, 3, 5, 7, 5];
+		var b = uniqArray(a);
+		console.log(b); // [1, 3, 5, 7]
+
+/////////////////////////////////////////////////////////////////////////////
+
+// 实现一个简单的trim函数，用于去除一个字符串，头部和尾部的空白字符
+// 假定空白字符只有半角空格、Tab
+// 练习通过循环，以及字符串的一些基本方法，分别扫描字符串str头部和尾部是否有连续的空白字符，并且删掉他们，最后返回一个完成去除的字符串
+		function simpleTrim(str) {
+		    for (var i = 0; i < str.length; i++) {
+		    	if (str.substr(i,1) == " ") {
+		    		str = str.substring(0,i)+str.substring(i+1);
+		    		i--;		//当捕捉到空格时，减去该空格，因为后一位前移，所以需要i--(if语句内)，避免漏检测。
+		    	}
+		    };
+		    return str;
+		}
+
+		// 使用示例
+		var str = '   ha!   ha!  ha!   ';
+		str = simpleTrim(str);
+		console.log(str); // 'ha!ha!ha!'
+// 很多同学肯定对于上面的代码看不下去，接下来，我们真正实现一个trim
+// 对字符串头尾进行空格字符的去除、包括全角半角空格、Tab等，返回一个字符串
+// 尝试使用一行简洁的正则表达式完成该题目
+		function RegTrim(str) {
+		    return str.replace(/\s/g,"");
+		}
+		// 使用示例
+		var str = '   hi!   hi!  ';
+		str = RegTrim(str);
+		console.log(str); // 'hi!hi!'
+
+//直接trim()方法实现
+		function trim(str){
+			return str.trim();		//P125
+		}
+		// 使用示例
+		var str = '   hey!  hey!   ';
+		str = trim(str);
+		console.log(str); // 'hey!hey!'
+///////////////////////////////////////////////////////////////////////////
+
+// 实现一个遍历数组的方法，针对数组中每一个元素执行fn函数，并将数组索引和元素作为参数传递
+// 其中fn函数可以接受两个参数：item和index
+		///////题1////////
+		function each1(arr, fn) {
+			var arrToString = arr.toString();
+			fn(arrToString);
+		}
+
+		// 使用示例
+		var arr = ['java', 'c', 'php', 'html'];
+		function output1(item) {
+		    console.log(item);
+		}
+		each1(arr, output1);  // java, c, php, html
+
+		///////题1////////
+		function each2(arr, fn) {
+		    for (var i = 0; i < arr.length; i++) {
+		    	var index = i;
+		    	fn(arr[i],index);
+		    }
+		}
+
+		// 使用示例
+		var arr = ['java', 'c', 'php', 'html'];
+		function output2(item, index) {
+		    console.log(index + ': ' + item);
+		}
+		each2(arr, output2);  // 0:java, 1:c, 2:php, 3:html
+
+////////////////////////////////////////////////////////////////////////////
+
+// 获取一个对象里面第一层元素的数量，返回一个整数
+		function getObjectLength(obj) {
+			
+		}
+
+// 使用示例
+		var obj = {
+		    a: 1,
+		    b: 2,
+		    c: {
+		        c1: 3,
+		        c2: 4
+		    }
+		};
+		console.log(getObjectLength(obj)); // 3
+	</script>
+</body>
+</html>
