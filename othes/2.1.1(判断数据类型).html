@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>判断数据类型</title>
+</head>
+<body>
+	<script type="text/javascript">
+// 判断arr是否为一个数组，返回一个bool值
+		//var a = "Well done!";
+		var a = ["blue","yellow"];          //不能在函数后定义，否则函数内的a均为未定义
+		function isArray(arr){
+			console.log(arr instanceof Array);
+			if (arr instanceof Array) {		//P88
+				console.log(arr);
+				console.log(typeof arr);
+				console.log("This is a array.");
+			} else {
+				console.log(arr);
+				console.log(typeof arr);
+				console.log("This is not a array.");
+			};
+		};
+		isArray(a);
+// 判断fn是否为一个函数，返回一个bool值
+		var b = function (){alert("Is it a function?");};
+		//var b = "Is it a function?";
+		function isFunction(fn){
+			console.log(fn instanceof Function);
+			if(fn instanceof Function){
+				console.log(fn);
+				console.log(typeof fn);
+				console.log("This is a function.");
+			} else {
+				console.log(fn);
+				console.log(typeof fn);
+				console.log("This is not a function.");
+			};
+		};
+		isFunction(b);
+		
+	</script>
+</body>
+</html>
